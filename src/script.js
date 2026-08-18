@@ -1,13 +1,13 @@
-// Importa funções principais do Firebase (app)
+// Importa funÃ§Ãµes principais do Firebase (app)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
 // Importa banco de dados (Firestore)
 import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-firestore.js";
-// Importa sistema de autenticação (login)
+// Importa sistema de autenticaÃ§Ã£o (login)
 import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } 
 from "https://www.gstatic.com/firebasejs/12.11.0/firebase-auth.js";
 // Dados do seu projeto no Firebase
 const firebaseConfig = {
-    apiKey: "AIzaSyDpQ-7im493IHYSs9cFtWpt7spVIMwcEC0",
+    apiKey: "Sua Api",
     authDomain: "clickergame-eb818.firebaseapp.com",
     projectId: "clickergame-eb818",
     storageBucket: "clickergame-eb818.firebasestorage.app",
@@ -16,13 +16,13 @@ const firebaseConfig = {
 };
 // Inicializa o Firebase no seu site
 const app = initializeApp(firebaseConfig);
-// Cria conexão com o banco de dados
+// Cria conexÃ£o com o banco de dados
 const db = getFirestore(app);
 // Inicializa sistema de login
 const auth = getAuth(app);
-// Define que o login será com Google
+// Define que o login serÃ¡ com Google
 const provider = new GoogleAuthProvider();
-// Guarda o ID do usuário logado
+// Guarda o ID do usuÃ¡rio logado
 let userId = null;
 // Pegando elementos da tela
 const display = document.getElementById("contador-cookie");
@@ -47,9 +47,9 @@ let custoAuto = 100;
 function atualizarTela() {
     // Mostra pontos atuais
     display.innerText = pontos;
-    // Mostra clicks automática
+    // Mostra clicks automÃ¡tica
     cpsDisplay.innerText = cps + " clicks por segundo";
-    // Atualiza preço dos upgrades na tela
+    // Atualiza preÃ§o dos upgrades na tela
     btnUpgradeClique.innerText = `+Clique (${custoClique})`;
     btnUpgradeAuto.innerText = `Auto Click (${custoAuto})`;
 }
@@ -58,32 +58,32 @@ btnLogin.onclick = async () => {
     // Abre popup de login com Google
     const result = await signInWithPopup(auth, provider);
     const user = result.user;
-    // Salva ID único do usuário
+    // Salva ID Ãºnico do usuÃ¡rio
     userId = user.uid;
     // Mostra nome e email na tela
     statusLogin.innerHTML = ` 
     ${user.displayName} <br>
     ${user.email} 
     `;
-    // Carrega progresso do usuário
+    // Carrega progresso do usuÃ¡rio
     carregar();
 };
 
 onAuthStateChanged(auth, (user) => {
     if (user) {
-        // Usuário já está logado
+        // UsuÃ¡rio jÃ¡ estÃ¡ logado
         userId = user.uid;
         statusLogin.innerText = "Logado como: " + user.displayName;
          // Carrega dados salvos
         carregar();
     } else {
-        // Usuário não logado
-        statusLogin.innerText = "Não logado";
+        // UsuÃ¡rio nÃ£o logado
+        statusLogin.innerText = "NÃ£o logado";
     }
 });
 
 async function salvar() {
-    // Só salva se tiver usuário logado
+    // SÃ³ salva se tiver usuÃ¡rio logado
     if (!userId) return;
      // Salva dados no Firestore
     await setDoc(doc(db, "usuarios", userId), {
@@ -96,7 +96,7 @@ async function salvar() {
 }
 
 async function carregar() {
-    // Só carrega se tiver usuário
+    // SÃ³ carrega se tiver usuÃ¡rio
     if (!userId) return;
 
     const docRef = doc(db, "usuarios", userId);
@@ -104,7 +104,7 @@ async function carregar() {
 
     if (docSnap.exists()) {
         const data = docSnap.data();
-        // Se já existe save
+        // Se jÃ¡ existe save
         pontos = data.pontos || 0;
         valorClique = data.valorClique || 1;
         cps = data.cps || 0;
@@ -146,7 +146,7 @@ btnUpgradeClique.onclick = () => {
 btnUpgradeAuto.onclick = () => {
     if (pontos >= custoAuto) {
         pontos -= custoAuto;
-        // Aumenta ganho automático
+        // Aumenta ganho automÃ¡tico
         cps += 1;
 
         custoAuto = Math.floor(custoAuto * 1.8);
